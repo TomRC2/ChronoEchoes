@@ -24,6 +24,15 @@ public class PlayerController : MonoBehaviour
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
     }
+    private void OnEnable()
+    {
+        jumpAction.performed += OnJump;
+    }
+
+    private void OnDisable()
+    {
+        jumpAction.performed -= OnJump;
+    }
     private void Update()
     {
         HandleMovement();

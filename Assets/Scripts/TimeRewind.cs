@@ -28,6 +28,17 @@ public class TimeRewindAbility : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         rewindAction = playerControls.FindActionMap("Player").FindAction("Rewind");
     }
+    private void OnEnable()
+    {
+        rewindAction.performed += StartRewind;
+        rewindAction.canceled += StopRewind;
+    }
+
+    private void OnDisable()
+    {
+        rewindAction.performed -= StartRewind;
+        rewindAction.canceled -= StopRewind;
+    }
     private void Update()
     {
         if (isRewinding)
