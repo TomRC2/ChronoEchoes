@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -15,6 +16,8 @@ public class TimeRewindAbility : MonoBehaviour
     [SerializeField] public float rewindRegenPerSecond = 0.5f;
 
     private float currentRewindEnergy;
+    public UnityEvent<float, float> OnRewindEnergyChanged;
+
 
     [Header("Input")]
     [SerializeField] private InputActionAsset playerControls;
@@ -73,6 +76,9 @@ public class TimeRewindAbility : MonoBehaviour
         {
             Debug.LogError("TimeRewindAbility: Global Volume o su Profile no asignados en el Inspector.");
         }
+
+        if (OnRewindEnergyChanged == null)
+            OnRewindEnergyChanged = new UnityEvent<float, float>();
     }
 
     private void OnEnable()
@@ -110,6 +116,8 @@ public class TimeRewindAbility : MonoBehaviour
 
             Record();
         }
+
+        OnRewindEnergyChanged.Invoke(currentRewindEnergy, maxRewindTime);
     }
 
     private void Record()

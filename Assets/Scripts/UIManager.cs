@@ -19,6 +19,7 @@ public class GameUIManager : MonoBehaviour
 
     [Header("Player References")]
     [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private TimeRewindAbility timeRewindAbility;
 
     [Header("HUD Elements")]
     [SerializeField] private Slider healthSlider;
@@ -39,13 +40,19 @@ public class GameUIManager : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.OnPlayerDied.AddListener(ShowGameOverPanel);
+            playerHealth.OnHealthChanged.AddListener(UpdateHealthUI);
+            UpdateHealthUI(playerHealth.currentHealth, playerHealth.maxHealth);
         }
         else
         {
             Debug.LogError("GameUIManager: PlayerHealth reference not set!");
         }
+        if (timeRewindAbility != null)
+        {
+            timeRewindAbility.OnRewindEnergyChanged.AddListener(UpdateTimeEnergyUI);
+            UpdateTimeEnergyUI(timeRewindAbility.GetCurrentRewindEnergy(), timeRewindAbility.GetMaxRewindEnergy());
+        }
     }
-
     public void RestartGame()
     {
         Time.timeScale = 1f;
