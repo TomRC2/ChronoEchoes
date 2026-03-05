@@ -1,20 +1,31 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 20f;
-    [SerializeField] private float lifetime = 3f;
+    public float speed = 25f;
+    public float lifeTime = 3f;
 
-    private Vector3 direction;
-
-    public void Initialize(Vector3 shootDirection)
+    private void Start()
     {
-        direction = shootDirection.normalized;
-        Destroy(gameObject, lifetime);
+        Destroy(gameObject, lifeTime);
     }
 
     private void Update()
     {
-        transform.position += direction * speed * Time.deltaTime;
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            Debug.Log("Hit enemy!");
+            Destroy(gameObject);
+        }
+
+        if (!other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
