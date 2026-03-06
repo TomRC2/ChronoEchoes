@@ -26,6 +26,10 @@ public class TimeRewindAbility : MonoBehaviour
     [SerializeField] private InputActionAsset playerControls;
     private InputAction rewindAction;
 
+    [Header("World Rewind Settings")]
+    [SerializeField] private InputAction worldRewindAction;
+    private bool isWorldRewinding = false;
+
     [Header("Post-Processing Effect (URP)")]
     [SerializeField] private Volume globalVolume;
     private ColorAdjustments colorAdjustments;
@@ -56,35 +60,66 @@ public class TimeRewindAbility : MonoBehaviour
         if (OnRewindEnergyChanged == null) OnRewindEnergyChanged = new UnityEvent<float, float>();
     }
 
-    private void OnEnable() { rewindAction.performed += StartRewind; rewindAction.canceled += StopRewind; }
+    private void OnEnable()
+    {
+        rewindAction.performed += StartRewind; rewindAction.canceled += StopRewind;
+        worldRewindAction.Enable();
+        worldRewindAction.performed += StartWorldRewind;
+        worldRewindAction.canceled += StopWorldRewind;
+    }
     private void OnDisable() { rewindAction.performed -= StartRewind; rewindAction.canceled -= StopRewind; }
 
     private void Update()
     {
-        if (isRewinding)
+        if (isRewinding || isWorldRewinding)
         {
             currentRewindEnergy -= rewindCostPerSecond * Time.deltaTime;
             currentRewindEnergy = Mathf.Max(currentRewindEnergy, 0);
 
-            if (currentRewindEnergy <= 0 || timePoints.Count == 0)
+            if (currentRewindEnergy <= 0)
             {
-                StopRewind(new UnityEngine.InputSystem.InputAction.CallbackContext());
+                if (isRewinding) StopRewind(new InputAction.CallbackContext());
+                if (isWorldRewinding) StopWorldRewind(new InputAction.CallbackContext());
                 return;
             }
 
-            Rewind();
+            if (isRewinding) Rewind();
         }
         else
         {
             currentRewindEnergy += rewindRegenPerSecond * Time.deltaTime;
             currentRewindEnergy = Mathf.Min(currentRewindEnergy, maxRewindTime);
-
             Record();
         }
-
         OnRewindEnergyChanged.Invoke(currentRewindEnergy, maxRewindTime);
     }
+    private void StartWorldRewind(InputAction.CallbackContext context)
+    {
+        if (currentRewindEnergy > 0 && !isRewinding)
+        {
+            isWorldRewinding = true;
 
+            ObjectRewind[] objects = Object.FindObjectsByType<ObjectRewind>(FindObjectsSortMode.None);
+            foreach (var obj in objects) obj.StartRewinding();
+
+            ProjectileRewind[] bullets = Object.FindObjectsByType<ProjectileRewind>(FindObjectsSortMode.None);
+            foreach (var bullet in bullets) bullet.StartRewinding();
+
+            ApplyRewindEffect();
+        }
+    }
+    private void StopWorldRewind(InputAction.CallbackContext context)
+    {
+        isWorldRewinding = false;
+
+        ObjectRewind[] objects = Object.FindObjectsByType<ObjectRewind>(FindObjectsSortMode.None);
+        foreach (var obj in objects) obj.StopRewinding();
+
+        ProjectileRewind[] bullets = Object.FindObjectsByType<ProjectileRewind>(FindObjectsSortMode.None);
+        foreach (var bullet in bullets) bullet.StopRewinding();
+
+        RestoreNormalEffect();
+    }
     private void Record()
     {
         int maxPoints = Mathf.RoundToInt(maxRewindTime / Time.deltaTime);
@@ -117,8 +152,8 @@ public class TimeRewindAbility : MonoBehaviour
                 videoBackground.Play();
             }
 
-            EnemyRewind[] enemies = Object.FindObjectsByType<EnemyRewind>(FindObjectsSortMode.None);
-            foreach (EnemyRewind enemy in enemies) enemy.StartRewinding();
+            ObjectRewind[] enemies = Object.FindObjectsByType<ObjectRewind>(FindObjectsSortMode.None);
+            foreach (ObjectRewind enemy in enemies) enemy.StartRewinding();
 
             ProjectileRewind[] bullets = Object.FindObjectsByType<ProjectileRewind>(FindObjectsSortMode.None);
             foreach (ProjectileRewind bullet in bullets) bullet.StartRewinding();
@@ -140,8 +175,8 @@ public class TimeRewindAbility : MonoBehaviour
             videoBackground.Play();
         }
 
-        EnemyRewind[] enemies = Object.FindObjectsByType<EnemyRewind>(FindObjectsSortMode.None);
-        foreach (EnemyRewind enemy in enemies) enemy.StopRewinding();
+        ObjectRewind[] enemies = Object.FindObjectsByType<ObjectRewind>(FindObjectsSortMode.None);
+        foreach (ObjectRewind enemy in enemies) enemy.StopRewinding();
 
         ProjectileRewind[] bullets = Object.FindObjectsByType<ProjectileRewind>(FindObjectsSortMode.None);
         foreach (ProjectileRewind bullet in bullets) bullet.StopRewinding();

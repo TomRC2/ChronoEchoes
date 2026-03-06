@@ -985,7 +985,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0029942428, y: 0.9883053, z: -0.1511977, w: 0.019572172}
-  m_LocalPosition: {x: -1.1241632, y: 3.872694, z: 9.08076}
+  m_LocalPosition: {x: -1.1224399, y: 3.872686, z: 9.08083}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14137,7 +14137,7 @@ Transform:
   m_GameObject: {fileID: 1873257837}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0029942428, y: 0.9883053, z: -0.1511977, w: 0.019572172}
-  m_LocalPosition: {x: -0.7757492, y: 3.655761, z: 9.16258}
+  m_LocalPosition: {x: -0.7740147, y: 3.655761, z: 9.162648}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21638,6 +21638,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 43e2697c-b84f-4f53-81da-1375b263f60c
     m_ActionName: 'Player/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6c8438a0-401c-4a17-a483-d1b5f949c6ca
+    m_ActionName: 'Player/WorldRewind[/Keyboard/r]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -21710,6 +21714,23 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   playerControls: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  worldRewindAction:
+    m_Name: World Rewind
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e3b7177c-05ec-4d8f-b061-24a9dfc84bb8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 3bbc9350-4c3b-4e54-912a-5d9675a43bc7
+      m_Path: <Keyboard>/r
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: World Rewind
+      m_Flags: 0
+    m_Flags: 0
   globalVolume: {fileID: 216125404}
   rewindParticles: {fileID: 906382120}
 --- !u!143 &6645115953018590386
