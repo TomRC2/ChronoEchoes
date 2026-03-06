@@ -19,6 +19,8 @@ public class EnemyController : MonoBehaviour
     private float nextFireTime;
     private Transform playerTransform;
 
+    [SerializeField] private GameObject deathEffectPrefab;
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -127,6 +129,12 @@ public class EnemyController : MonoBehaviour
     private void Die()
     {
         Debug.Log($"Enemy {name} has died.");
+
+        if (deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
 

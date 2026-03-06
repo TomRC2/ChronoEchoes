@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private LineRenderer laserLineRenderer;
     private Vector3 currentAimPoint;
 
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     [Header("Input")]
     [SerializeField] private InputActionAsset playerControls;
@@ -115,7 +117,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (controller.isGrounded && playerVelocity.y < 0f)
-            playerVelocity.y = -2f; // snap al suelo
+            playerVelocity.y = -2f;
         else
             playerVelocity.y += gravity * Time.deltaTime;
 
@@ -193,6 +195,7 @@ public class PlayerController : MonoBehaviour
     
         Quaternion shootRotation = Quaternion.LookRotation(shootDirection);
         Instantiate(projectilePrefab, firePoint.position, shootRotation);
+        if (muzzleFlash != null) muzzleFlash.Play();
     }
 
     // -------------------- AIMING --------------------
@@ -233,12 +236,10 @@ public class PlayerController : MonoBehaviour
             laserLineRenderer.SetPosition(0, firePoint.position);
             laserLineRenderer.SetPosition(1, hit.point);
 
-            // Guardamos el punto exacto del impacto
             currentAimPoint = hit.point;
         }
         else
         {
-            // Si no pega en nada, apuntamos a un punto lejano en la dirección del rayo
             currentAimPoint = ray.origin + ray.direction * 100f;
             laserLineRenderer.SetPosition(0, firePoint.position);
             laserLineRenderer.SetPosition(1, currentAimPoint);

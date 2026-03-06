@@ -101,8 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9852c195ed618f642bf0af0151e955bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
-  lifetime: 3
+  speed: 50
+  lifeTime: 3
+  hitEffectPrefab: {fileID: 5362046268925647444, guid: baeee6af71cf2b74684987836007bfb6, type: 3}
 --- !u!135 &6336123669658930830
 SphereCollider:
   m_ObjectHideFlags: 0

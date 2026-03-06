@@ -31,9 +31,5 @@ public class EnemyBullet : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        else if (!other.CompareTag("Enemy") && !other.CompareTag("Bullet"))
-        {
-            Destroy(gameObject);
-        }
     }
 }

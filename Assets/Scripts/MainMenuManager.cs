@@ -21,8 +21,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void PlayGame()
     {
-        Debug.Log("Cargando juego...");
-        SceneManager.LoadScene("GameScene");
+        LevelLoader.Instance.LoadNextLevel("Level1");
     }
 
     public void QuitGame()

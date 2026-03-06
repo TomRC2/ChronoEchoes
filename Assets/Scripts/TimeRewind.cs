@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-
+using UnityEngine.Video;
 
 [RequireComponent(typeof(PlayerController))]
 public class TimeRewindAbility : MonoBehaviour
@@ -15,9 +14,13 @@ public class TimeRewindAbility : MonoBehaviour
     [SerializeField] public float rewindCostPerSecond = 1f;
     [SerializeField] public float rewindRegenPerSecond = 0.5f;
 
+    [Header("Video Swap Settings")]
+    [SerializeField] private VideoClip normalVideo;
+    [SerializeField] private VideoClip reverseVideo;
+    [SerializeField] private VideoPlayer videoBackground;
+
     private float currentRewindEnergy;
     public UnityEvent<float, float> OnRewindEnergyChanged;
-
 
     [Header("Input")]
     [SerializeField] private InputActionAsset playerControls;
@@ -27,18 +30,10 @@ public class TimeRewindAbility : MonoBehaviour
     [SerializeField] private Volume globalVolume;
     private ColorAdjustments colorAdjustments;
 
-    private float originalPostExposure;
-    private float originalContrast;
+    private float originalPostExposure, originalContrast, originalHueShift, originalSaturation;
     private Color originalColorFilter;
-    private float originalHueShift;
-    private float originalSaturation;
-
-    private struct TimePoint
-    {
-        public Vector3 position;
-        public Quaternion rotation;
-    }
-
+    [SerializeField] private ParticleSystem rewindParticles;
+    private struct TimePoint { public Vector3 position; public Quaternion rotation; }
     private List<TimePoint> timePoints = new List<TimePoint>();
     private bool isRewinding = false;
     private PlayerController playerController;
@@ -47,51 +42,22 @@ public class TimeRewindAbility : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         rewindAction = playerControls.FindActionMap("Player").FindAction("Rewind");
-
         currentRewindEnergy = maxRewindTime;
 
-        if (globalVolume != null && globalVolume.profile != null)
+        if (globalVolume != null && globalVolume.profile.TryGet(out colorAdjustments))
         {
-            if (!globalVolume.profile.TryGet(out colorAdjustments))
-            {
-                Debug.LogError("TimeRewindAbility: No se pudo obtener el ColorAdjustments del Volume Profile. Asegúrate de que está añadido al perfil.");
-            }
-
-            if (colorAdjustments != null)
-            {
-                colorAdjustments.postExposure.overrideState = true;
-                colorAdjustments.contrast.overrideState = true;
-                colorAdjustments.colorFilter.overrideState = true;
-                colorAdjustments.hueShift.overrideState = true;
-                colorAdjustments.saturation.overrideState = true;
-
-                originalPostExposure = colorAdjustments.postExposure.value;
-                originalContrast = colorAdjustments.contrast.value;
-                originalColorFilter = colorAdjustments.colorFilter.value;
-                originalHueShift = colorAdjustments.hueShift.value;
-                originalSaturation = colorAdjustments.saturation.value;
-            }
-        }
-        else
-        {
-            Debug.LogError("TimeRewindAbility: Global Volume o su Profile no asignados en el Inspector.");
+            originalPostExposure = colorAdjustments.postExposure.value;
+            originalContrast = colorAdjustments.contrast.value;
+            originalColorFilter = colorAdjustments.colorFilter.value;
+            originalHueShift = colorAdjustments.hueShift.value;
+            originalSaturation = colorAdjustments.saturation.value;
         }
 
-        if (OnRewindEnergyChanged == null)
-            OnRewindEnergyChanged = new UnityEvent<float, float>();
+        if (OnRewindEnergyChanged == null) OnRewindEnergyChanged = new UnityEvent<float, float>();
     }
 
-    private void OnEnable()
-    {
-        rewindAction.performed += StartRewind;
-        rewindAction.canceled += StopRewind;
-    }
-
-    private void OnDisable()
-    {
-        rewindAction.performed -= StartRewind;
-        rewindAction.canceled -= StopRewind;
-    }
+    private void OnEnable() { rewindAction.performed += StartRewind; rewindAction.canceled += StopRewind; }
+    private void OnDisable() { rewindAction.performed -= StartRewind; rewindAction.canceled -= StopRewind; }
 
     private void Update()
     {
@@ -102,8 +68,7 @@ public class TimeRewindAbility : MonoBehaviour
 
             if (currentRewindEnergy <= 0 || timePoints.Count == 0)
             {
-                isRewinding = false;
-                StopRewind(new InputAction.CallbackContext());
+                StopRewind(new UnityEngine.InputSystem.InputAction.CallbackContext());
                 return;
             }
 
@@ -123,10 +88,7 @@ public class TimeRewindAbility : MonoBehaviour
     private void Record()
     {
         int maxPoints = Mathf.RoundToInt(maxRewindTime / Time.deltaTime);
-        if (timePoints.Count > maxPoints)
-        {
-            timePoints.RemoveAt(timePoints.Count - 1);
-        }
+        if (timePoints.Count > maxPoints) timePoints.RemoveAt(timePoints.Count - 1);
         timePoints.Insert(0, new TimePoint { position = transform.position, rotation = transform.rotation });
     }
 
@@ -134,27 +96,56 @@ public class TimeRewindAbility : MonoBehaviour
     {
         if (timePoints.Count > 0)
         {
-            TimePoint timePoint = timePoints[0];
-            transform.position = timePoint.position;
-            transform.rotation = timePoint.rotation;
+            transform.position = timePoints[0].position;
+            transform.rotation = timePoints[0].rotation;
             timePoints.RemoveAt(0);
         }
     }
 
-    private void StartRewind(InputAction.CallbackContext context)
+    private void StartRewind(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         if (currentRewindEnergy > 0 && timePoints.Count > 0)
         {
             isRewinding = true;
             playerController.enabled = false;
+
+            if (rewindParticles != null) rewindParticles.Play();
+
+            if (videoBackground != null && reverseVideo != null)
+            {
+                videoBackground.clip = reverseVideo;
+                videoBackground.Play();
+            }
+
+            EnemyRewind[] enemies = Object.FindObjectsByType<EnemyRewind>(FindObjectsSortMode.None);
+            foreach (EnemyRewind enemy in enemies) enemy.StartRewinding();
+
+            ProjectileRewind[] bullets = Object.FindObjectsByType<ProjectileRewind>(FindObjectsSortMode.None);
+            foreach (ProjectileRewind bullet in bullets) bullet.StartRewinding();
+
             ApplyRewindEffect();
         }
     }
 
-    private void StopRewind(InputAction.CallbackContext context)
+    private void StopRewind(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         isRewinding = false;
         playerController.enabled = true;
+
+        if (rewindParticles != null) rewindParticles.Stop();
+
+        if (videoBackground != null && normalVideo != null)
+        {
+            videoBackground.clip = normalVideo;
+            videoBackground.Play();
+        }
+
+        EnemyRewind[] enemies = Object.FindObjectsByType<EnemyRewind>(FindObjectsSortMode.None);
+        foreach (EnemyRewind enemy in enemies) enemy.StopRewinding();
+
+        ProjectileRewind[] bullets = Object.FindObjectsByType<ProjectileRewind>(FindObjectsSortMode.None);
+        foreach (ProjectileRewind bullet in bullets) bullet.StopRewinding();
+
         RestoreNormalEffect();
     }
 
@@ -163,25 +154,11 @@ public class TimeRewindAbility : MonoBehaviour
         if (colorAdjustments != null)
         {
             colorAdjustments.active = true;
-
-            colorAdjustments.postExposure.overrideState = true;
             colorAdjustments.postExposure.value = -2f;
-
-            colorAdjustments.contrast.overrideState = true;
             colorAdjustments.contrast.value = -50f;
-
-            colorAdjustments.hueShift.overrideState = true;
             colorAdjustments.hueShift.value = 180f;
-
-            colorAdjustments.saturation.overrideState = true;
             colorAdjustments.saturation.value = -100f;
-
-            colorAdjustments.colorFilter.overrideState = true;
             colorAdjustments.colorFilter.value = Color.magenta;
-        }
-        else
-        {
-            Debug.LogWarning("ColorAdjustments is null when trying to apply rewind effect. Check globalVolume assignment and profile.");
         }
     }
 
@@ -197,13 +174,7 @@ public class TimeRewindAbility : MonoBehaviour
         }
     }
 
-    public float GetCurrentRewindEnergy()
-    {
-        return currentRewindEnergy;
-    }
-
-    public float GetMaxRewindEnergy()
-    {
-        return maxRewindTime;
-    }
+    public void RestoreFullEnergy() { currentRewindEnergy = maxRewindTime; OnRewindEnergyChanged.Invoke(currentRewindEnergy, maxRewindTime); }
+    public float GetCurrentRewindEnergy() { return currentRewindEnergy; }
+    public float GetMaxRewindEnergy() { return maxRewindTime; }
 }
