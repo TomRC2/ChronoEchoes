@@ -134,7 +134,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  maxHealth: 30
+  maxHealth: 60
   detectionRange: 10
   fireRate: 2
   enemyBulletPrefab: {fileID: 0}
