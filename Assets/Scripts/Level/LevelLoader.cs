@@ -49,4 +49,11 @@ public class LevelLoader : MonoBehaviour
 
         SceneManager.LoadScene(sceneName);
     }
+
+    [SerializeField] private string nextLevelName;
+
+    public void Victory()
+    {
+        LevelLoader.Instance.LoadNextLevel(nextLevelName);
+    }
 }

@@ -17,8 +17,22 @@ public class ObjectRewind : MonoBehaviour
     private void Awake()
     {
         enemyController = GetComponent<EnemyController>();
-        TimeRewindAbility playerRewind = GameObject.FindWithTag("Player").GetComponent<TimeRewindAbility>();
-        if (playerRewind != null) maxRewindTime = playerRewind.GetMaxRewindEnergy();
+
+        GameObject playerObj = GameObject.FindWithTag("Player");
+
+        if (playerObj != null)
+        {
+            TimeRewindAbility playerRewind = playerObj.GetComponent<TimeRewindAbility>();
+            if (playerRewind != null)
+            {
+                maxRewindTime = playerRewind.GetMaxRewindEnergy();
+            }
+        }
+        if (maxRewindTime <= 0)
+        {
+            maxRewindTime = 5f;
+            Debug.LogWarning("Ojo: No se encontró la energía del Player en esta escena. Usando 5s por defecto.");
+        }
     }
 
     private void FixedUpdate()
