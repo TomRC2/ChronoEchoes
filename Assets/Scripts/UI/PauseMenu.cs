@@ -26,9 +26,6 @@ public class PauseMenu : MonoBehaviour
         pausePanel.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     void Pause()
@@ -36,24 +33,17 @@ public class PauseMenu : MonoBehaviour
         pausePanel.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     public void Restart()
     {
         Time.timeScale = 1f;
         isPaused = false;
-
         if (pausePanel != null) pausePanel.SetActive(false);
 
         if (LevelLoader.Instance != null)
         {
-            string currentScene = SceneManager.GetActiveScene().name;
-            LevelLoader.Instance.LoadNextLevel(currentScene);
-
-            Debug.Log("Reiniciando nivel con transición...");
+            LevelLoader.Instance.LoadNextLevel(SceneManager.GetActiveScene().name);
         }
         else
         {

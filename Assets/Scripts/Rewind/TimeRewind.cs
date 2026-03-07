@@ -212,4 +212,13 @@ public class TimeRewindAbility : MonoBehaviour
     public void RestoreFullEnergy() { currentRewindEnergy = maxRewindTime; OnRewindEnergyChanged.Invoke(currentRewindEnergy, maxRewindTime); }
     public float GetCurrentRewindEnergy() { return currentRewindEnergy; }
     public float GetMaxRewindEnergy() { return maxRewindTime; }
+
+    public void ClearTimePoints()
+    {
+        if (timePoints != null)
+        {
+            timePoints.Clear();
+            Debug.Log("Historial temporal reiniciado para evitar bucles de muerte.");
+        }
+    }
 }

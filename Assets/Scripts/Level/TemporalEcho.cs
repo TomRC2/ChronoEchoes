@@ -15,11 +15,17 @@ public class TemporalEcho : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerHealth health = other.GetComponent<PlayerHealth>();
-            if (health != null) health.Heal(health.maxHealth); //
+
+            if (CheckpointManager.Instance != null)
+            {
+                CheckpointManager.Instance.SaveCheckpoint(transform.position);
+            }
+
+                PlayerHealth health = other.GetComponent<PlayerHealth>();
+            if (health != null) health.Heal(health.maxHealth);
 
             TimeRewindAbility rewind = other.GetComponent<TimeRewindAbility>();
-            if (rewind != null) rewind.RestoreFullEnergy(); //
+            if (rewind != null) rewind.RestoreFullEnergy();
 
             if (collectEffectPrefab != null)
             {
@@ -31,8 +37,9 @@ public class TemporalEcho : MonoBehaviour
                 LevelManager.Instance.EchoCollected();
             }
 
-            Debug.Log("Eco recolectado con efectos visuales.");
+            Debug.Log("Eco recolectado y Checkpoint guardado.");
             Destroy(gameObject);
+             
         }
     }
 }

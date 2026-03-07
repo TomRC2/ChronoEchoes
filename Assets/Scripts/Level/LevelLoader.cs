@@ -56,4 +56,21 @@ public class LevelLoader : MonoBehaviour
     {
         LevelLoader.Instance.LoadNextLevel(nextLevelName);
     }
+
+    public void PlayStartTransition()
+    {
+        if (transitionAnimator != null)
+        {
+            transitionAnimator.ResetTrigger("End");
+            transitionAnimator.SetTrigger("Start");
+        }
+    }
+    public void PlayEndTransition()
+    {
+        if (transitionAnimator != null)
+        {
+            transitionAnimator.ResetTrigger("Start");
+            transitionAnimator.SetTrigger("End");
+        }
+    }
 }
