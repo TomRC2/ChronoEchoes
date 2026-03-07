@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     private int currentPatrolPointIndex = 0;
 
     [Header("Health")]
-    [SerializeField] private int maxHealth = 30;
+    [SerializeField] public int maxHealth = 30;
     private int currentHealth;
 
     [Header("Attack")]
@@ -145,5 +145,10 @@ public class EnemyController : MonoBehaviour
             TakeDamage(10);
             Destroy(other.gameObject);
         }
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }
