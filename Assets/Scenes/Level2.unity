@@ -1442,7 +1442,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0029942428, y: 0.9883053, z: -0.1511977, w: 0.019572172}
-  m_LocalPosition: {x: 78.1059, y: 6.267826, z: 8.330555}
+  m_LocalPosition: {x: 78.10418, y: 6.2678065, z: 8.330492}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18088,9 +18088,9 @@ GameObject:
   - component: {fileID: 1658351175}
   - component: {fileID: 1658351174}
   - component: {fileID: 1658351173}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TutorialTrigger
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18763,7 +18763,7 @@ Transform:
   m_GameObject: {fileID: 1873257837}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0029942428, y: 0.9883053, z: -0.1511977, w: 0.019572172}
-  m_LocalPosition: {x: 78.43599, y: 3.6557608, z: 9.162648}
+  m_LocalPosition: {x: 78.43426, y: 3.6557608, z: 9.16258}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

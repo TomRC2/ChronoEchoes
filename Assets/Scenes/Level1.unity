@@ -749,9 +749,9 @@ GameObject:
   - component: {fileID: 176589251}
   - component: {fileID: 176589250}
   - component: {fileID: 176589249}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TutorialTrigger (2)
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1390,7 +1390,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0029942428, y: 0.9883053, z: -0.1511977, w: 0.019572172}
-  m_LocalPosition: {x: -1.1224399, y: 3.872686, z: 9.08083}
+  m_LocalPosition: {x: -1.1241632, y: 3.872685, z: 9.080762}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8088,9 +8088,9 @@ GameObject:
   - component: {fileID: 895803548}
   - component: {fileID: 895803547}
   - component: {fileID: 895803546}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TutorialTrigger (3)
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14030,9 +14030,9 @@ GameObject:
   - component: {fileID: 1170266764}
   - component: {fileID: 1170266763}
   - component: {fileID: 1170266762}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TutorialTrigger (4)
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14824,9 +14824,9 @@ GameObject:
   - component: {fileID: 1337040472}
   - component: {fileID: 1337040471}
   - component: {fileID: 1337040470}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TutorialTrigger (1)
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15669,9 +15669,9 @@ GameObject:
   - component: {fileID: 1540169569}
   - component: {fileID: 1540169568}
   - component: {fileID: 1540169567}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TutorialTrigger
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16509,7 +16509,7 @@ Transform:
   m_GameObject: {fileID: 1873257837}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0029942428, y: 0.9883053, z: -0.1511977, w: 0.019572172}
-  m_LocalPosition: {x: -0.7740147, y: 3.655761, z: 9.162648}
+  m_LocalPosition: {x: -0.7757492, y: 3.655761, z: 9.16258}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21935,7 +21935,7 @@ GameObject:
   - component: {fileID: 2124443726}
   m_Layer: 0
   m_Name: CameraBounds
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
