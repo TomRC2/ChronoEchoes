@@ -13,6 +13,7 @@ public class MainMenuManager : MonoBehaviour
         if (playButton != null)
         {
             playButton.onClick.AddListener(PlayGame);
+            playButton.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
         }
         if (quitButton != null)
         {

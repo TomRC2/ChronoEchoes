@@ -36,7 +36,8 @@ public class TemporalEcho : MonoBehaviour
             {
                 LevelManager.Instance.EchoCollected();
             }
-
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.glitchSFX);
             Debug.Log("Eco recolectado y Checkpoint guardado.");
             Destroy(gameObject);
              

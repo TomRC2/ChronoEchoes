@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     private int currentEchoes = 0;
 
     [Header("References")]
-    [SerializeField] private GameUIManager uiManager;
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private GameObject victoryPortal;
 
     private void Awake()

@@ -14,7 +14,7 @@ public class TutorialTrigger : MonoBehaviour
 
         if (other.CompareTag("Player") && !_alreadyTriggered)
         {
-            GameUIManager ui = FindFirstObjectByType<GameUIManager>();
+            UIManager ui = FindFirstObjectByType<UIManager>();
 
             if (ui != null)
             {

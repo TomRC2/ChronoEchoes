@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class VictoryPoint : MonoBehaviour
 {
-    [SerializeField] private GameUIManager gameUIManager;
+    [SerializeField] private UIManager gameUIManager;
     [SerializeField] private string nextLevelName = "Level2";
 
     private void OnTriggerEnter(Collider other)

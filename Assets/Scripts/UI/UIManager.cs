@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-public class GameUIManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     [Header("UI Panels")]
     [SerializeField] private GameObject gameOverPanel;
@@ -38,11 +38,32 @@ public class GameUIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (victoryPanel != null) victoryPanel.SetActive(false);
         if (portalMessagePanel != null) portalMessagePanel.SetActive(false);
-        if (nextLevelButton_V != null) nextLevelButton_V.onClick.AddListener(LoadNextLevel);
-        if (respawnButton_GO != null) respawnButton_GO.onClick.AddListener(HandleRetry);
-        if (mainMenuButton_GO != null) mainMenuButton_GO.onClick.AddListener(LoadMainMenu);
-        if (restartButton_V != null) restartButton_V.onClick.AddListener(RestartGame);
-        if (mainMenuButton_V != null) mainMenuButton_V.onClick.AddListener(LoadMainMenu);
+        if (nextLevelButton_V != null)
+        {
+            nextLevelButton_V.onClick.AddListener(LoadNextLevel);
+            nextLevelButton_V.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
+        }
+        if (respawnButton_GO != null)
+        {
+            respawnButton_GO.onClick.AddListener(HandleRetry);
+            respawnButton_GO.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
+        }
+
+        if (mainMenuButton_GO != null)
+        {
+            mainMenuButton_GO.onClick.AddListener(LoadMainMenu);
+            mainMenuButton_GO.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
+        }
+        if (restartButton_V != null)
+        {
+            restartButton_V.onClick.AddListener(RestartGame);
+            restartButton_V.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
+        }
+        if (mainMenuButton_V != null) 
+        {
+            mainMenuButton_V.onClick.AddListener(LoadMainMenu);
+            mainMenuButton_V.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
+        }
 
         if (playerHealth != null)
         {
@@ -53,6 +74,17 @@ public class GameUIManager : MonoBehaviour
         if (timeRewindAbility != null)
         {
             timeRewindAbility.OnRewindEnergyChanged.AddListener(UpdateTimeEnergyUI);
+        }
+        if (respawnButton_GO != null)
+        {
+            respawnButton_GO.onClick.AddListener(HandleRetry);
+            respawnButton_GO.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
+        }
+
+        if (mainMenuButton_GO != null)
+        {
+            mainMenuButton_GO.onClick.AddListener(LoadMainMenu);
+            mainMenuButton_GO.onClick.AddListener(AudioManager.Instance.PlayButtonClick);
         }
     }
     public void ShowPortalMessage()
@@ -192,6 +224,6 @@ public class GameUIManager : MonoBehaviour
 
     public void UpdateEchoCounter(int current, int target)
     {
-        if (echoCounterText != null) echoCounterText.text = $"Temporal Echos: {current}/{target}";
+        if (echoCounterText != null) echoCounterText.text = $"Temporal Echoes: {current}/{target}";
     }
 }

@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
     private void ShootProjectile()
     {
         if (!projectilePrefab || !firePoint) return;
-
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.shootSFX);
         Vector3 shootDirection = (currentAimPoint - firePoint.position).normalized;
     
         Quaternion shootRotation = Quaternion.LookRotation(shootDirection);

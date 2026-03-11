@@ -113,6 +113,7 @@ public class EnemyController : MonoBehaviour
         {
             bulletScript.Initialize(shootDirection);
         }
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.shootSFX);
     }
 
     public void TakeDamage(int damageAmount)
@@ -124,6 +125,7 @@ public class EnemyController : MonoBehaviour
         {
             Die();
         }
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.enemyHitSFX);
     }
 
     private void Die()

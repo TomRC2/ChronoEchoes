@@ -92,6 +92,29 @@ public class TimeRewindAbility : MonoBehaviour
             Record();
         }
         OnRewindEnergyChanged.Invoke(currentRewindEnergy, maxRewindTime);
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayRewindLoop(true);
+        }
+
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayRewindLoop(false);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayRewindLoop(true);
+        }
+
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayRewindLoop(false);
+        }
     }
     private void StartWorldRewind(InputAction.CallbackContext context)
     {

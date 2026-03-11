@@ -26,6 +26,7 @@ public class PauseMenu : MonoBehaviour
         pausePanel.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.glitchSFX);
     }
 
     void Pause()
@@ -33,6 +34,7 @@ public class PauseMenu : MonoBehaviour
         pausePanel.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.glitchSFX);
     }
 
     public void Restart()
@@ -49,6 +51,7 @@ public class PauseMenu : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.glitchSFX);
     }
 
     public void LoadMenu()
@@ -56,5 +59,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         SceneManager.LoadScene("MainMenu");
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.glitchSFX);
     }
 }
